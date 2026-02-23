@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Miss You - Ammar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #canvas-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Sunflower Garden Background */
+        .sunflower-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('sunflower-garden.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+        }
+
+        .sunflower-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(2px);
+        }
+
+        /* Floating Sunflowers Background - All Directions */
+        #floating-sunflowers {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Bottom to Top */
+        .floating-sunflower {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .float-bottom {
+            animation: float-bottom 10s ease-in-out infinite;
+        }
+
+        @keyframes float-bottom {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+                transform: translateY(90vh) rotate(36deg) scale(1);
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Left to Right */
+        .float-left {
+            animation: float-left 12s ease-in-out infinite;
+        }
+
+        @keyframes float-left {
+            0% {
+                transform: translateX(-100px) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+                transform: translateX(10vw) rotate(36deg) scale(1);
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateX(110vw) rotate(360deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Right to Left */
+        .float-right {
+            animation: float-right 12s ease-in-out infinite;
+        }
+
+        @keyframes float-right {
+            0% {
+                transform: translateX(100vw) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+                transform: translateX(90vw) rotate(-36deg) scale(1);
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateX(-100px) rotate(-360deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Top to Bottom */
+        .float-top {
+            animation: float-top 10s ease-in-out infinite;
+        }
+
+        @keyframes float-top {
+            0% {
+                transform: translateY(-100px) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+                transform: translateY(10vh) rotate(36deg) scale(1);
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Diagonal Floats */
+        .float-diagonal-1 {
+            animation: float-diagonal-1 11s ease-in-out infinite;
+        }
+
+        @keyframes float-diagonal-1 {
+            0% {
+                transform: translate(-100px, 100vh) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+                transform: translate(10vw, 90vh) rotate(45deg) scale(1);
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(110vw, -100px) rotate(405deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        .float-diagonal-2 {
+            animation: float-diagonal-2 11s ease-in-out infinite;
+        }
+
+        @keyframes float-diagonal-2 {
+            0% {
+                transform: translate(100vw, 100vh) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+                transform: translate(90vw, 90vh) rotate(-45deg) scale(1);
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(-100px, -100px) rotate(-405deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Main Photo Card */
+        .photo-card {
+            position: relative;
+            width: 500px;
+            height: 750px;
+            background: linear-gradient(145deg, #fff5e6 0%, #ffe4b5 100%);
+            border-radius: 30px;
+            padding: 20px;
+            box-shadow: 
+                0 20px 60px rgba(0,0,0,0.4),
+                inset 0 0 60px rgba(255,215,0,0.1);
+            z-index: 10;
+            transform: scale(0.9);
+            animation: card-entrance 1s ease-out forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes card-entrance {
+            to {
+                transform: scale(1);
+            }
+        }
+
+        /* Cute Decorative Frame */
+        .cute-frame {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            border: 4px solid #FFD700;
+            border-radius: 40px;
+            pointer-events: none;
+            z-index: 20;
+            box-shadow: 
+                0 0 20px rgba(255,215,0,0.5),
+                inset 0 0 20px rgba(255,215,0,0.2);
+        }
+
+        .cute-frame::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px dashed #FFA500;
+            border-radius: 30px;
+            opacity: 0.6;
+        }
+
+        /* Corner Decorations */
+        .corner-decoration {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            z-index: 21;
+        }
+
+        .corner-decoration.top-left {
+            top: -25px;
+            left: -25px;
+            transform: rotate(-45deg);
+        }
+
+        .corner-decoration.top-right {
+            top: -25px;
+            right: -25px;
+            transform: rotate(45deg);
+        }
+
+        .corner-decoration.bottom-left {
+            bottom: -25px;
+            left: -25px;
+            transform: rotate(-135deg);
+        }
+
+        .corner-decoration.bottom-right {
+            bottom: -25px;
+            right: -25px;
+            transform: rotate(135deg);
+        }
+
+        .corner-decoration::before {
+            content: '🌻';
+            font-size: 40px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        /* Top Section with Anime Eyes and Text */
+        .top-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+            z-index: 25;
+        }
+
+        /* Anime Eyes - Now at TOP above the text */
+        .anime-eyes-container {
+            display: flex;
+            gap: 15px;
+            animation: eyes-bounce 2s ease-in-out infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes eyes-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .anime-eye {
+            width: 60px;
+            height: 45px;
+            background: white;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            box-shadow: 
+                0 4px 8px rgba(0,0,0,0.2),
+                inset -2px -2px 6px rgba(0,0,0,0.1),
+                0 0 30px rgba(100,200,255,0.4);
+            overflow: hidden;
+            position: relative;
+            animation: blink 4s infinite;
+        }
+
+        @keyframes blink {
+            0%, 96%, 100% { transform: scaleY(1); }
+            98% { transform: scaleY(0.1); }
+        }
+
+        .iris {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            background: radial-gradient(circle at 30% 30%, #8B4513 0%, #654321 50%, #3d2817 100%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .iris::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(circle at 30% 30%, #000 0%, #333 100%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .iris::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            top: 20%;
+            left: 25%;
+            box-shadow: 
+                10px 5px 0 -2px rgba(255,255,255,0.8),
+                -5px 8px 0 -3px rgba(255,255,255,0.6);
+        }
+
+        .eye-shine {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.5) 50%, transparent 60%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        /* Text Under Eyes - Below the anime eyes */
+        .eyes-text {
+            font-size: 14px;
+            color: #fff;
+            text-shadow: 
+                0 0 10px rgba(255,105,180,0.8),
+                0 0 20px rgba(255,105,180,0.5),
+                0 0 30px rgba(255,105,180,0.3),
+                0 2px 4px rgba(0,0,0,0.5);
+            font-weight: bold;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            font-family: 'Courier New', monospace;
+            animation: text-glow 2s ease-in-out infinite;
+            background: rgba(0,0,0,0.4);
+            padding: 6px 12px;
+            border-radius: 15px;
+        }
+
+        @keyframes text-glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255,105,180,0.8), 0 0 20px rgba(255,105,180,0.5), 0 0 30px rgba(255,105,180,0.3), 0 2px 4px rgba(0,0,0,0.5); }
+            50% { text-shadow: 0 0 20px rgba(255,105,180,1), 0 0 40px rgba(255,105,180,0.8), 0 0 60px rgba(255,105,180,0.5), 0 2px 4px rgba(0,0,0,0.5); }
+        }
+
+        /* Photo Container */
+        .photo-container {
+            position: relative;
+            width: 100%;
+            height: 420px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-top: 15px;
+        }
+
+        .main-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: contrast(1.1) saturate(1.1);
+        }
+
+        /* Sparkles around photo */
+        .sparkle {
+            position: absolute;
+            color: #FFD700;
+            font-size: 24px;
+            animation: sparkle-anim 2s ease-in-out infinite;
+            z-index: 14;
+            text-shadow: 0 0 10px rgba(255,215,0,0.8);
+        }
+
+        @keyframes sparkle-anim {
+            0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1) rotate(180deg); opacity: 1; }
+        }
+
+        /* Main Message - Bottom of frame */
+        .message-container {
+            margin-top: 20px;
+            text-align: center;
+            z-index: 15;
+        }
+
+        .main-message {
+            font-size: 22px;
+            font-weight: bold;
+            color: #8B4513;
+            text-shadow: 
+                2px 2px 4px rgba(255,255,255,0.8),
+                0 0 20px rgba(255,215,0,0.5);
+            line-height: 1.4;
+            font-family: 'Georgia', serif;
+            animation: message-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes message-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .heart-emoji {
+            display: inline-block;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.2); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+        }
+
+        /* Floating hearts */
+        .floating-heart {
+            position: absolute;
+            color: #ff6b9d;
+            font-size: 20px;
+            animation: float-heart 4s ease-in infinite;
+            opacity: 0;
+            z-index: 5;
+        }
+
+        @keyframes float-heart {
+            0% {
+                transform: translateY(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-400px) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .photo-card {
+                width: 90vw;
+                height: auto;
+                padding: 15px;
+            }
+            .photo-container {
+                height: 320px;
+            }
+            .main-message {
+                font-size: 18px;
+            }
+            .anime-eye {
+                width: 45px;
+                height: 35px;
+            }
+            .iris {
+                width: 25px;
+                height: 25px;
+            }
+            .eyes-text {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+        <!-- Sunflower Garden Background -->
+        <div class="sunflower-bg"></div>
+
+        <!-- Floating Sunflowers Background -->
+        <div id="floating-sunflowers"></div>
+
+        <!-- Floating Hearts -->
+        <div id="floating-hearts"></div>
+
+        <!-- Main Photo Card -->
+        <div class="photo-card">
+            <!-- Cute Frame -->
+            <div class="cute-frame"></div>
+            <div class="corner-decoration top-left"></div>
+            <div class="corner-decoration top-right"></div>
+            <div class="corner-decoration bottom-left"></div>
+            <div class="corner-decoration bottom-right"></div>
+
+            <!-- Sparkles -->
+            <div class="sparkle" style="top: 80px; left: 30px; animation-delay: 0s;">✨</div>
+            <div class="sparkle" style="top: 120px; right: 30px; animation-delay: 0.5s;">⭐</div>
+            <div class="sparkle" style="top: 220px; left: 10px; animation-delay: 1s;">✨</div>
+            <div class="sparkle" style="top: 180px; right: 10px; animation-delay: 1.5s;">⭐</div>
+
+            <!-- Top Section: Anime Eyes + Text -->
+            <div class="top-section">
+                <!-- Anime Eyes - At TOP -->
+                <div class="anime-eyes-container">
+                    <div class="anime-eye">
+                        <div class="iris"></div>
+                        <div class="eye-shine"></div>
+                    </div>
+                    <div class="anime-eye">
+                        <div class="iris"></div>
+                        <div class="eye-shine"></div>
+                    </div>
+                </div>
+
+                <!-- Text Under Eyes - Below the eyes -->
+                <div class="eyes-text">my eyes only look for you</div>
+            </div>
+
+            <!-- Photo Container -->
+            <div class="photo-container">
+                <img src="312D0A0C-74B0-4F11-BEF3-8819D6125D55.jpeg" alt="Ammar" class="main-photo" id="main-photo">
+            </div>
+
+            <!-- Main Message - Bottom of frame -->
+            <div class="message-container">
+                <div class="main-message">
+                    I miss every moment<br>
+                    with you Ammar<br>
+                    <span class="heart-emoji">💛</span><span class="heart-emoji">🌻</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating sunflower SVG
+        function createSunflowerSVG() {
+            return `
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="petalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <g transform="translate(50,50)">
+                    ${Array.from({length: 12}, (_, i) => {
+                        return `<ellipse cx="0" cy="-35" rx="8" ry="25" fill="url(#petalGrad)" transform="rotate(${i * 30})"/>`;
+                    }).join('')}
+                    <circle cx="0" cy="0" r="20" fill="#8B4513"/>
+                    <circle cx="0" cy="0" r="15" fill="#654321"/>
+                    ${Array.from({length: 8}, (_, i) => {
+                        const angle = (i * 45) * Math.PI / 180;
+                        const x = Math.cos(angle) * 10;
+                        const y = Math.sin(angle) * 10;
+                        return `<circle cx="${x}" cy="${y}" r="2" fill="#4a3728"/>`;
+                    }).join('')}
+                </g>
+            </svg>`;
+        }
+
+        // Create floating sunflowers from all directions
+        function createFloatingSunflowers() {
+            const container = document.getElementById('floating-sunflowers');
+            const directions = ['float-bottom', 'float-left', 'float-right', 'float-top', 'float-diagonal-1', 'float-diagonal-2'];
+            
+            // Create more sunflowers continuously
+            setInterval(() => {
+                const sunflower = document.createElement('div');
+                const direction = directions[Math.floor(Math.random() * directions.length)];
+                sunflower.className = `floating-sunflower ${direction}`;
+                sunflower.innerHTML = createSunflowerSVG();
+                
+                // Random positioning based on direction
+                if (direction === 'float-bottom' || direction === 'float-top') {
+                    sunflower.style.left = Math.random() * 100 + '%';
+                } else if (direction === 'float-left' || direction === 'float-right') {
+                    sunflower.style.top = Math.random() * 100 + '%';
+                } else {
+                    sunflower.style.left = Math.random() * 50 + '%';
+                    sunflower.style.top = Math.random() * 50 + '%';
+                }
+                
+                sunflower.style.animationDuration = (8 + Math.random() * 6) + 's';
+                sunflower.style.animationDelay = Math.random() * 3 + 's';
+                sunflower.style.width = (25 + Math.random() * 50) + 'px';
+                sunflower.style.height = sunflower.style.width;
+                container.appendChild(sunflower);
+                
+                setTimeout(() => {
+                    sunflower.remove();
+                }, 15000);
+            }, 300); // More frequent - every 300ms
+        }
+
+        // Create floating hearts
+        function createFloatingHearts() {
+            const container = document.getElementById('floating-hearts');
+            const hearts = ['💛', '🌻', '💕', '💖', '✨'];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.bottom = '0';
+                heart.style.animationDuration = (4 + Math.random() * 3) + 's';
+                container.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 7000);
+            }, 1200);
+        }
+
+        // Initialize
+        window.onload = function() {
+            createFloatingSunflowers();
+            createFloatingHearts();
+        };
+
+        // Handle image loading errors
+        document.getElementById('main-photo').onerror = function() {
+            this.style.background = 'linear-gradient(45deg, #FFD700, #FFA500)';
+            this.alt = 'Photo';
+        };
+    </script>
+</body>
+</html>
